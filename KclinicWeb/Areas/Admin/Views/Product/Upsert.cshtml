@@ -1,0 +1,146 @@
+﻿@model Kclinic.Models.ViewModels.ProductVM
+
+
+<div class="container">
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+	<input asp-for="Product.Id" hidden />
+	<input asp-for="Product.ImageUrl" hidden />
+
+	<div class="row">
+		<div class="col-10">
+			<div class="border p-3 mt-4 row">
+		<div class="col-12 pb-2">
+			<h2 class="text-primary">@(Model.Product.Id!=0?"Update": "Create")  Product</h2>
+			<hr />
+		</div>
+		@*<div asp-validation-summary="All"></div>*@
+		<div class="mb-3">
+			<label asp-for="Product.Name"></label>
+			<input asp-for="Product.Name" class="form-control" />
+			<span asp-validation-for="Product.Name" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="Product.Description"></label>
+			<textarea asp-for="Product.Description" rows="3" class="form-control" id="open-source-plugins-product"></textarea>
+			<span asp-validation-for="Product.Description" class="text-danger"></span>
+		</div>
+		<div class="mb-3 col-6">
+			<label asp-for="Product.Price"></label>
+			<input asp-for="Product.Price" class="form-control" />
+			<span asp-validation-for="Product.Price" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="Product.ImageUrl"></label>
+			<input type="file" id="uploadBox" name="file" class="form-control" />
+		</div>
+		<div class="mb-3 col-md-6">
+			<label asp-for="Product.CateItemId"></label>
+			<select asp-for="Product.CateItemId" asp-items="@Model.CateItemList" class="form-select">
+				<option disabled selected>--Select CateItem--</option>
+			</select>
+			<span asp-validation-for="Product.CateItemId" class="text-danger"></span>
+		</div>
+		<br	/>
+		
+		<br /><br />
+		<div class="col-12">
+			@if (Model.Product.Id != 0)
+			{
+				<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+			}
+			else
+			{
+				<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+			}
+			<a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">
+				Back to List
+			</a>
+		</div>
+
+	</div>
+  </div>
+</div>
+
+</form>
+</div>
+@section Scripts{
+	@{
+	<partial name="_ValidationScriptsPartial" />
+	}
+<script>
+	const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
+
+	tinymce.init({
+			selector: 'textarea#open-source-plugins-product',
+			plugins: 'preview importcss searchreplace autosave save directionality code visualblocks visualchars fullscreen template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+			editimage_cors_hosts: ['picsum.photos'],
+			menubar: 'file edit view insert format tools table help',
+			toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | ltr rtl',
+			toolbar_sticky: false,
+			toolbar_sticky_offset: isSmallScreen ? 102 : 108,
+			autosave_ask_before_unload: true,
+			autosave_interval: '30s',
+			autosave_prefix: '{path}{query}-{id}-',
+			autosave_restore_when_empty: false,
+			autosave_retention: '2m',
+			image_advtab: true,
+			link_list: [
+				{ title: 'My page 1', value: 'https://www.tiny.cloud' },
+				{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+			],
+			image_list: [
+				{ title: 'My page 1', value: 'https://www.tiny.cloud' },
+				{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+			],
+			image_class_list: [
+				{ title: 'None', value: '' },
+				{ title: 'Some class', value: 'class-name' }
+			],
+			importcss_append: true,
+			file_picker_callback: (callback, value, meta) => {
+				/* Provide file and text for the link dialog */
+				if (meta.filetype === 'file') {
+					callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+				}
+
+				/* Provide image and alt text for the image dialog */
+				if (meta.filetype === 'image') {
+					callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+				}
+
+				/* Provide alternative source and posted for the media dialog */
+				if (meta.filetype === 'media') {
+					callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+				}
+			},
+			templates: [
+				{ title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+				{ title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+				{ title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+			],
+			template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+			template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+			height: 600,
+			quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+			noneditable_class: 'mceNonEditable',
+			toolbar_mode: 'sliding',
+			skin: useDarkMode ? 'oxide-dark' : 'oxide',
+			content_css: useDarkMode ? 'dark' : 'default',
+			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+	});
+
+
+	function ValidateInput(){
+		if(document.getElementById("uploadBox").value==""){
+			Swal.fire({
+			  icon: 'error',
+			  title: 'Oops...',
+			  text: 'Please upload an Image!',
+			});
+			return false;
+		}
+		return true;
+	}
+</script>
+}

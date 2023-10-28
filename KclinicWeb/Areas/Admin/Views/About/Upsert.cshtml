@@ -1,0 +1,68 @@
+﻿@model Kclinic.Models.ViewModels.AboutVM
+
+
+<div class="container">
+	<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+		<input asp-for="About.Id" hidden />
+		<input asp-for="About.ImageUrl" hidden />
+
+		<div class="row">
+			<div class="col-10">
+				<div class="border p-3 mt-4 row">
+					<div class="col-12 pb-2">
+						<h2 class="text-primary">@(Model.About.Id != 0 ? "Update" : "Create")  About </h2>
+						<hr />
+					</div>
+					@*<div asp-validation-summary="All"></div>*@
+					<div class="mb-3">
+						<label asp-for="About.Title"></label>
+						<input asp-for="About.Title" class="form-control" />
+						<span asp-validation-for="About.Title" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3 col-6">
+						<label asp-for="About.Content"></label>
+						<textarea asp-for="About.Content" class="form-control"></textarea>
+						<span asp-validation-for="About.Content" class="text-danger"></span>
+					</div><div class="mb-3 col-6">
+						<label asp-for="About.Link"></label>
+						<input asp-for="About.Link" class="form-control" />
+						<span asp-validation-for="About.Link" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="About.ImageUrl"></label>
+						<input type="file" id="uploadBox" name="file" class="form-control" />
+					</div>
+
+
+					<br /><br />
+					<div class="col-12">
+						@if (Model.About.Id != 0)
+						{
+							<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+						}
+						else
+						{
+							<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+						}
+						<a asp-controller="About" asp-action="Index" class="btn btn-secondary" style="width:150px">
+							Back to List
+						</a>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-2 pt-4">
+				<img src="@Model.About.ImageUrl"
+					 width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+			</div>
+		</div>
+
+	</form>
+</div>
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+
+}

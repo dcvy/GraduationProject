@@ -1,0 +1,79 @@
+﻿@model ShoppingCart
+
+@using System.Text.RegularExpressions;
+@using System.IO;
+
+@functions {
+    public string InsertImageUrls(string description)
+    {
+        string uploadsFolder = "/images/products/"; // The folder where images are uploaded on the server.
+
+        // Find all occurrences of <img> tags in the content.
+        var imgTags = new Regex(@"<img.*?>").Matches(description);
+        foreach (Match imgTag in imgTags)
+        {
+            // Extract the 'src' attribute value from the <img> tag.
+            var srcAttribute = new Regex(@"src\s*=\s*""([^""]*)""").Match(imgTag.Value);
+            if (srcAttribute.Success)
+            {
+                string oldImageUrl = srcAttribute.Groups[1].Value;
+
+                // Use the Path.GetFileName to get the filename from the URL.
+                string filename = System.IO.Path.GetFileName(oldImageUrl);
+
+                // Construct the new image URL with the correct relative path.
+                string newImageUrl = $"{uploadsFolder}{filename}";
+
+                // Replace the temporary URL with the correct server URL.
+                description = description.Replace(oldImageUrl, newImageUrl);
+
+            }
+        }
+
+        return description;
+    }
+}
+<form method="post">
+    <input hidden asp-for="ProductId" />
+    <div class="container">
+
+        <!-- NEWS DETAIL -->
+        <section id="news-detail" data-stellar-background-ratio="0.5">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-10 col-sm-10 ">
+                        <!-- NEWS THUMB -->
+                        <div class="news-detail-thumb">
+                            <div class="news-image">
+                                <img src="@Model.Product.ImageUrl" class="img-responsive" alt="" style="max-width: auto; max-height: 533px;">
+                            </div>
+                            <p class="text-secondary" style="max-width">@Html.Raw(InsertImageUrls(Model.Product.Description))</p>
+                            <div class="news-social-share">
+                                <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i>Facebook</a>
+                                <a href="#" class="btn btn-success"><i class="fa fa-twitter"></i>Twitter</a>
+                                <a href="#" class="btn btn-danger"><i class="fa fa-google-plus"></i>Google+</a>
+                            </div>
+                            <div class="news-categories">
+                                <span><h4>Danh mục: </h4><h5>@Model.Product.CateItem.Name</h5></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+            </div>
+        </section>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-12 col-md-6 pb-1">
+                    <a class="custom-button success form-control " style="height:50px;" asp-action="Index">Về trang chủ</a>
+                </div>
+                <div class="col-12 col-md-6 pb-1">
+                    <button type="submit" value="Add to Cart" class="custom-button primary form-control" style="height:50px;">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

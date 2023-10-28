@@ -1,0 +1,17 @@
+﻿@{
+    var result = ViewData["Result"] as string;
+}
+
+<form method="post" enctype="multipart/form-data" action="/Customer/Python/ProcessImage">
+    <div class="form-group">
+        <label for="imageFile">Select an Image File:</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/*" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload and Process</button>
+</form>
+
+@if (!string.IsNullOrEmpty(result))
+{
+    <h2>Results:</h2>
+    <p>@result</p>
+}

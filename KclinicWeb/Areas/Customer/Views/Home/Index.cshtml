@@ -1,0 +1,397 @@
+﻿@model Kclinic.Models.ViewModels.HomeVM
+
+<!-- HOME -->
+<section id="home" class="slider" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row">
+
+            <div class="owl-carousel owl-theme">
+                <div class="item item-first">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item item-second">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item item-third">
+                    <div class="caption">
+                        <div class="col-md-offset-1 col-md-10">
+                            <h3>Tin tức</h3>
+                            <h1 style="color:forestgreen">Tin hot trong ngày</h1>
+                            <a href="#news" class="section-btn btn btn-default btn-blue smoothScroll">Đọc tin tức</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about" class="">
+    <div class="container">
+        <div class="row">
+            @{
+                var about1 = Model.Abouts.FirstOrDefault(a => a.Id == 1);
+            }
+            @if (about1 != null)
+            {
+            <div class="col-md-6 col-sm-6">
+                <div class="about-info overrate">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.3s">@*@about1.Title*@</h2>
+                    <div class="wow fadeInUp" data-wow-delay="0.4s">
+                        <p>
+                            @*@about1.Content*@
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="about-info text-center overrate">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.3s">Video Giới thiệu</h2>
+                    <iframe width="350" height="315" src="https://www.youtube.com@*@(about1.Link)*@" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+<section id="specialfunction" class="" data-stellar-background-ratio="2.5">
+    <div class="container">
+        <div class="row">
+            @{
+                var about2 = Model.Abouts.FirstOrDefault(a => a.Id == 2);
+            }
+            <div class="col-md-12 ml-auto mr-auto text-center row justify-content-center overrate">
+                <h2 class="wow fadeInUp" data-wow-delay="0.3s">@*@about2.Title*@</h2>
+                <div class="caption-container">
+                    <h4 id="caption" class="wow fadeInUp" data-wow-delay="0.3s"></h4>
+                </div>
+                <div class="container mt-3 mb-3 " >
+                    @{
+                        int num = 1;
+                    }
+                    @foreach (var feature in Model.Features)
+                    {
+                        <!-- Full-width images with number text -->
+                        <div class="mySlides text-center">
+                            <img src="@feature.ImageUrl" style="width:100%" />
+                        </div>
+                    }
+                    <!-- Next and previous buttons -->
+                    <a class="bef" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="aft" onclick="plusSlides(1)">&#10095;</a>
+                   
+                    <!-- Thumbnail images -->
+                    <div class="row small-item " style="width:100%">
+                        <div class="clearfix"></div>
+                        <div class="slider" id="feature-slider">
+                        @foreach (var Feature in Model.Features)
+                        {
+                            <div class="column">
+                                <img class="demo cursor text-center" src="@Feature.ImageUrl" style="width:100%" onclick="currentSlide(@num)" alt="@Feature.Title">
+                            </div>
+                            num++;
+                        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CHUCNANG -->
+<section id="func" class="">
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            @{
+                var about3 = Model.Abouts.FirstOrDefault(a => a.Id == 3);
+            }
+            @if (about3 != null)
+            {
+                <div class="col-md-12 col-sm-12 overrate">
+                    <div class="about-info">
+                        <h2 class="wow fadeInUp" data-wow-delay="0.3s">@*@about3.Title*@</h2>
+                        <h4 class="wow fadeInUp" data-wow-delay="0.4s">
+                            @*@about3.Content*@
+                        </h4>
+                    </div>
+                    @if (Model.Functions != null)
+                    {
+                        <div id="funcarea" class="row" style="padding-top:40px;">
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (var function in Model.Functions)
+                            {
+                                <div class="col-lg-3 col-md-4 col-6 px-3 mb-2">
+                                    <a asp-area="Customer" asp-controller="Home" asp-action="Function" asp-route-id="@function.Id" target="_self" class="text-center">
+                                        <div class=" d-flex justify-content-center">
+                                            <img src="~/asset/images/func@(count).png" style="width:45px; height:45px;" />
+                                        </div>
+                                        <h3 style="margin-bottom:25px;">@function.Title</h3>
+                                    </a>
+                                </div>
+                                count++;
+                            }
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Product -->
+<section id="team" class="" data-stellar-background-ratio="1">
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            @{
+                var about4 = Model.Abouts.FirstOrDefault(a => a.Id == 4);
+            }
+            @if (about4 != null)
+            {
+                <div class="col-md-12 col-sm-12 overrate">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                        <h2>@*@about4.Title*@</h2>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
+
+           <div class="slider" id="product-slider">
+                @{
+                    double delay = 0.2;
+                }
+
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="team-thumb wow fadeInUp" data-wow-delay="@delay.ToString("F1")s">
+                            <img src="@product.ImageUrl" class="img-responsive" style="width: 360px; height: 240px;" alt="">
+
+                            <div class="team-info">
+                                <a asp-action="Details" asp-route-productId="@product.Id">
+                                <h3>@product.Name</h3>
+                                </a>
+                                <br \>
+                                @{
+                                    // Convert the price to a string
+                                    string priceString = product.Price.ToString("N0"); // N0 format adds thousands separators
+                                }
+                                @*<h3><span>@priceString</span><span> .VNĐ</span></h3>*@
+                                <div class="team-contact-info">
+                                    <p><i class="fa fa-phone"></i> 0914911577</p>
+                                    <p><i class="fa fa-envelope-o"></i> <a href="#">www.kclgroup.vn</a></p>
+                                </div>
+                                <ul class="social-icon">
+                                    <li><a asp-action="Details" asp-route-productId="@product.Id" class="fa fa-cart-plus"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    delay += 0.2;
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- NEWS -->
+<section id="news" class="" data-stellar-background-ratio="2.5">
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            @{
+                var about5 = Model.Abouts.FirstOrDefault(a => a.Id == 5);
+            }
+            @if (about5 != null)
+            {
+                <div class="col-md-12 col-sm-12 overrate">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                        <h2>@*@about5.Title*@</h2>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
+            <div class="slider" id="blog-slider">
+            @foreach (var Blog in Model.Blogs)
+            {
+                <div class="col-md-4 col-sm-6 ">
+                    <div class="news-thumb wow fadeInUp text-center" data-wow-delay="0.4s">
+                        <a asp-action="DetailsBlog" asp-route-id="@Blog.Id">
+                            <img src="@Blog.ImageUrl" class="img-responsive" style="width: 360px; height: 240px;" alt="">
+                        </a>
+                        <div class="news-info">
+                            <h3>
+                                <a asp-action="DetailsBlog" asp-route-id="@Blog.Id">
+                                    @Blog.Title
+                                </a>
+                            </h3>
+                            @{
+                                string description = Blog.Description;
+
+                                // Remove HTML tags and keep only the text content
+                                string textContent = System.Text.RegularExpressions.Regex.Replace(description, "<.*?>", "");
+
+                                string[] words = textContent.Split(' ');
+                                int maxWords = 20;
+                                string truncatedDescription = string.Join(" ", words.Take(maxWords));
+                            }
+                            <p>@Html.Raw($"<p>{truncatedDescription}</p>")...</p>
+                            <div class="author">
+
+                                <div class="author-info">
+                                    <h5 style="display: inline;"><strong>Tác giả: </strong></h5>
+                                    <h5 style="display: inline;">@Blog.Author</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Launch -->
+<section id="launchs" class="" data-stellar-background-ratio="2.5">
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            @{
+                var about6 = Model.Abouts.FirstOrDefault(a => a.Id == 6);
+            }
+            @if (about6 != null)
+            {
+                <div class="col-md-12 col-sm-12 overrate">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp text-center" data-wow-delay="0.1s">
+                        <h2>@*@about6.Title*@</h2>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
+            <div class="slider" id="launch-slider">
+            @foreach (var Launch in Model.Launchs)
+            {
+                <div class="col-md-4 col-sm-6 mb-20" style="margin-bottom: 30px;">
+                    <div class="news-thumb wow fadeInUp" data-wow-delay="0.4s">
+                        <a asp-action="DetailLaunch" asp-route-id="@Launch.Id">
+                            <img src="@Launch.ImageUrl" class="img-responsive" style="width: 360px; height: 240px;" alt="">
+                        </a>
+                        <div class="news-info">
+                            <h3>
+                                <a asp-action="DetailLaunch" asp-route-id="@Launch.Id">
+                                    @Launch.Title
+                                </a>
+                            </h3>
+                            @{
+                                string description = Launch.Description;
+
+                                // Remove HTML tags and keep only the text content
+                                string textContent = System.Text.RegularExpressions.Regex.Replace(description, "<.*?>", "");
+
+                                string[] words = textContent.Split(' ');
+                                int maxWords = 20;
+                                string truncatedDescription = string.Join(" ", words.Take(maxWords));
+                            }
+                            <p>@Html.Raw($"<p>{truncatedDescription}</p>")...</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- GOOGLE MAP -->
+<section id="google-map">
+    <!-- How to change your own map point
+            1. Go to Google Maps
+            2. Click on your location point
+            3. Click "Share" and choose "Embed map" tab
+            4. Copy only URL and paste it within the src="" field below
+    -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.2417671116687!2d108.20806877489419!3d16.052939139874308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219b9ce0625c7%3A0xbf63be46a3f58014!2zMTYwIEzDqiDEkMOsbmggTMO9LCBIw7JhIFRodeG6rW4gxJDDtG5nLCBI4bqjaSBDaMOidSwgxJDDoCBO4bq1bmcgNTUwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1691979484558!5m2!1svi!2s" style="border:0;width:100%; height:350px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+<!-- CLIENTS -->
+<section id="partners" class="" data-stellar-background-ratio="2.5">
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            @{
+                var about8 = Model.Abouts.FirstOrDefault(a => a.Id == 8);
+            }
+            @if (about8 != null)
+            {
+                <div class="col-md-12 col-sm-12 overrate">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp text-center" data-wow-delay="0.1s">
+                        <h2 style="padding-top:20px">@*@about8.Title*@</h2>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
+            <div class="slider" id="partner-slider">
+            @foreach (var Partner in Model.Partners)
+            {
+                <div class="col-md-12 col-sm-12 mb-20" style="">
+                    <div class="news-thumb wow fadeInUp text-center" data-wow-delay="0.4s">
+                        <img src="@Partner.ImageUrl" class="img-responsive" style="width: 150px; height: 150px;" alt="">
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("demo");
+            let captionText = document.getElementById("caption");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            captionText.innerHTML = dots[slideIndex - 1].alt;
+        }
+    </script>
+}

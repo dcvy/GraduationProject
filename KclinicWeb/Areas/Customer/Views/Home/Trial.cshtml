@@ -1,0 +1,582 @@
+﻿@model Kclinic.Models.ViewModels.HomeVM
+
+<div class="container">
+    <form id="appointment-form" role="form" method="post" asp-action="Create" asp-area="Customer" asp-controller="Trial">
+
+        <!-- SECTION TITLE -->
+        <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+            <h2>Phiếu khảo sát</h2>
+        </div>
+
+        <div class="wow fadeInUp" data-wow-delay="0.4s">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label asp-for="@Model.Trial.TenPhongKham">Tên phòng khám</label>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Trial.TenPhongKham" type="text" class="form-control" id="tenphongkham" name="tenphongkham" placeholder="Nhập tên...">
+                            <span asp-validation-for="@Model.Trial.TenPhongKham" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="@Model.Trial.DiaChi">Địa Chỉ</label>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Trial.DiaChi" type="text" class="form-control" id="diachi" name="diachi" placeholder="Nhập địa chỉ...">
+                            <span asp-validation-for="@Model.Trial.DiaChi" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="@Model.Trial.NguoiLienHe">Người Liên Hệ</label>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Trial.NguoiLienHe" type="text" class="form-control" id="nguoilienhe" name="nguoilienhe" placeholder="Nhập người liên hệ...">
+                            <span asp-validation-for="@Model.Trial.NguoiLienHe" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="@Model.Trial.Dienthoai">Số điện thoại</label>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Trial.Dienthoai" type="tel" class="form-control" id="dienthoai" name="dienthoai" placeholder="Nhập sđt...">
+                            <span asp-validation-for="@Model.Trial.Dienthoai" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="@Model.Trial.Email">Email</label>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Trial.Email" type="email" class="form-control" id="email" name="email" placeholder="Nhập email...">
+                            <span asp-validation-for="@Model.Trial.Email" class="text-danger"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>TT</th>
+                        <th>Nội dung khảo sát</th>
+                        <th>Kết quả khảo sát</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Số lượng nhân viên sử dụng phần mềm</td>
+                        <td>
+                            <input asp-for="@Model.Trial.SoLuongNhanVienSuDungPhanMem" type="number" class="form-control" id="SoLuongNhanVienSuDungPhanMem" name="SoLuongNhanVienSuDungPhanMem" placeholder="Nhập số lượng...">
+                            <span asp-validation-for="@Model.Trial.SoLuongNhanVienSuDungPhanMem" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Số bác sĩ khám bệnh</td>
+                        <td>
+                            <input asp-for="@Model.Trial.SoBacSiKhamBenh" type="number" class="form-control" id="SoBacSiKhamBenh" name="SoBacSiKhamBenh" placeholder="Nhập số lượng...">
+                            <span asp-validation-for="@Model.Trial.SoBacSiKhamBenh" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Số bàn khám</td>
+                        <td>
+                            <input asp-for="@Model.Trial.SoBanKham" type="number" class="form-control" id="SoBanKham" name="SoBanKham" placeholder="Nhập số lượng...">
+                            <span asp-validation-for="@Model.Trial.SoBanKham" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Số phòng cận lâm sàng</td>
+                        <td>
+                            <input asp-for="@Model.Trial.SoPhongCanLamSang" type="number" class="form-control" id="SoPhongCanLamSang" name="SoPhongCanLamSang" placeholder="Nhập số lượng...">
+                            <span asp-validation-for="@Model.Trial.SoPhongCanLamSang" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Danh mục kỹ thuật dịch vụ</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.DanhMucKyThuatDichVu" class="form-check-input" type="checkbox" id="DanhMucKyThuatDichVuCheckbox" name="DanhMucKyThuatDichVu">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.DanhMucKyThuatDichVu" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Phòng khám có danh mục BHYT</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.PhongKhamCoDanhMucBHYT" class="form-check-input" type="checkbox" id="PhongKhamCoDanhMucBHYTCheckbox" name="PhongKhamCoDanhMucBHYT">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.PhongKhamCoDanhMucBHYT" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Phòng khám có chức năng bán thuốc</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.PhongKhamCoChucNangBanThuoc" class="form-check-input" type="checkbox" id="PhongKhamCoChucNangBanThuocCheckbox" name="PhongKhamCoChucNangBanThuoc">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.PhongKhamCoChucNangBanThuoc" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>                        
+                        <td><b>B.CÁC PHÂN HỆ CẦN TRIỂN KHAI</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>1</b></td>
+                        <td><b>Website phòng khám</b></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Giới thiệu thông tin về phòng khám</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.GioiThieuThongTinVePhongKham" class="form-check-input" type="checkbox" id="GioiThieuThongTinVePhongKhamCheckbox" name="GioiThieuThongTinVePhongKham">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.GioiThieuThongTinVePhongKham" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Khách hàng đăng ký khám chữa bệnh</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.KhachHangDangKyKhamChuaBenh" class="form-check-input" type="checkbox" id="KhachHangDangKyKhamChuaBenhCheckbox" name="KhachHangDangKyKhamChuaBenh">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.KhachHangDangKyKhamChuaBenh" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Khách hàng tra cứu bệnh sử</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.KhachHangTraCuuBenhSu" class="form-check-input" type="checkbox" id="KhachHangTraCuuBenhSuCheckbox" name="KhachHangTraCuuBenhSu">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.KhachHangTraCuuBenhSu" type="hidden" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>2</b></td>
+                        <td><b>Phần mềm phòng khám</b></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Quản lý lịch hẹn</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyLichHen" class="form-check-input" type="checkbox" id="QuanLyLichHenCheckbox" name="QuanLyLichHen">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyLichHen" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý tiếp đón</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyTiepDon" class="form-check-input" type="checkbox" id="QuanLyTiepDonCheckbox" name="QuanLyTiepDon">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyTiepDon" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Khám bệnh</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.KhamBenh" class="form-check-input" type="checkbox" id="KhamBenhCheckbox" name="KhamBenh">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.KhamBenh" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý khám sức khỏe</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyKhamSucKhoe" class="form-check-input" type="checkbox" id="QuanLyKhamSucKhoeCheckbox" name="QuanLyKhamSucKhoe">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyKhamSucKhoe" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý chỉ định và trả lời kết quả xét nghiệm</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaXetNghiem" class="form-check-input" type="checkbox" id="QuanLyChiDinhVaTraLoiKetQuaXetNghiemCheckbox" name="QuanLyChiDinhVaTraLoiKetQuaXetNghiem">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaXetNghiem" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý chỉ định và trả lời kết quả hình ảnh</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaHinhAnh" class="form-check-input" type="checkbox" id="QuanLyChiDinhVaTraLoiKetQuaHinhAnhCheckbox" name="QuanLyChiDinhVaTraLoiKetQuaHinhAnh">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaHinhAnh" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý dược phẩm, vật tư y tế</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyDuocPhamVatTuYTe" class="form-check-input" type="checkbox" id="QuanLyDuocPhamVatTuYTeCheckbox" name="QuanLyDuocPhamVatTuYTe">
+                                
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyDuocPhamVatTuYTe" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý thu ngân</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyThuNgan" class="form-check-input" type="checkbox" id="QuanLyThuNganCheckbox" name="QuanLyThuNgan">
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyThuNgan" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Hệ thống báo cáo</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.HeThongBaoCao" class="form-check-input" type="checkbox" id="HeThongBaoCaoCheckbox" name="HeThongBaoCao">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.HeThongBaoCao" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản lý danh mục</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanLyDanhMuc" class="form-check-input" type="checkbox" id="QuanLyDanhMucCheckbox" name="QuanLyDanhMuc">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanLyDanhMuc" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Quản trị hệ thống</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.QuanTriHeThong" class="form-check-input" type="checkbox" id="QuanTriHeThongCheckbox" name="QuanTriHeThong">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.QuanTriHeThong" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>3</b></td>
+                        <td><b>Hệ thống tích hợp</b></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Kết nối máy xét nghiệm</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.KetNoiMayXetNghiem" class="form-check-input" type="checkbox" id="KetNoiMayXetNghiemCheckbox" name="KetNoiMayXetNghiem">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.KetNoiMayXetNghiem" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Kết nối máy siêu âm giải phẫu bệnh</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.KetNoiMaySieuAmGiaiPhauBenh" class="form-check-input" type="checkbox" id="KetNoiMaySieuAmGiaiPhauBenhCheckbox" name="KetNoiMaySieuAmGiaiPhauBenh">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.KetNoiMaySieuAmGiaiPhauBenh" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Trả lời kết quả, nhắc hẹn uống thuốc... qua Zalo, SMS</td>
+                        <td>
+                            <div class="form-check">
+                                <input asp-for="@Model.Trial.TraLoiKetQuaQuaZalo" class="form-check-input" type="checkbox" id="TraLoiKetQuaQuaZaloCheckbox" name="TraLoiKetQuaQuaZalo">
+
+                            </div>
+                            <!-- Use a hidden input to store the value -->
+                            <input asp-for="@Model.Trial.TraLoiKetQuaQuaZalo" type="hidden" value="false" />
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="col-md-12 col-sm-12">
+                <label asp-for="@Model.Trial.Message">C. CÁC YÊU CẦU KHÁC (NẾU CÓ)</label>
+                <textarea asp-for="@Model.Trial.Message" class="form-control" rows="5" id="message" name="message" placeholder="Nhập yêu cầu..."></textarea>
+                <span asp-validation-for="@Model.Trial.Message" class="text-danger"></span>
+            </div>
+@*
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.GioiThieuThongTinVePhongKham" class="form-check-input" type="checkbox" id="GioiThieuThongTinVePhongKhamCheckbox" name="GioiThieuThongTinVePhongKham">
+                    <label class="form-check-label" for="GioiThieuThongTinVePhongKham">Giới thiệu thông tin về phòng khám</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.GioiThieuThongTinVePhongKham" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.KhachHangDangKyKhamChuaBenh" class="form-check-input" type="checkbox" id="KhachHangDangKyKhamChuaBenhCheckbox" name="KhachHangDangKyKhamChuaBenh">
+                    <label class="form-check-label" for="KhachHangDangKyKhamChuaBenh">Khách hàng đăng ký khám chữa bệnh</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.KhachHangDangKyKhamChuaBenh" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.KhachHangTraCuuBenhSu" class="form-check-input" type="checkbox" id="KhachHangTraCuuBenhSuCheckbox" name="KhachHangTraCuuBenhSu">
+                    <label class="form-check-label" for="KhachHangTraCuuBenhSu">Khách hàng tra cứu bệnh sử</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.KhachHangTraCuuBenhSu" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyLichHen" class="form-check-input" type="checkbox" id="QuanLyLichHenCheckbox" name="QuanLyLichHen">
+                    <label class="form-check-label" for="QuanLyLichHen">Quản lý lịch hẹn</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyLichHen" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyTiepDon" class="form-check-input" type="checkbox" id="QuanLyTiepDonCheckbox" name="QuanLyTiepDon">
+                    <label class="form-check-label" for="QuanLyTiepDon">Quản lý tiếp đón</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyTiepDon" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.KhamBenh" class="form-check-input" type="checkbox" id="KhamBenhCheckbox" name="KhamBenh">
+                    <label class="form-check-label" for="KhamBenh">Khám bệnh</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.KhamBenh" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyKhamSucKhoe" class="form-check-input" type="checkbox" id="QuanLyKhamSucKhoeCheckbox" name="QuanLyKhamSucKhoe">
+                    <label class="form-check-label" for="QuanLyKhamSucKhoe">Quản lý khám sức khỏe</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyKhamSucKhoe" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaXetNghiem" class="form-check-input" type="checkbox" id="QuanLyChiDinhVaTraLoiKetQuaXetNghiemCheckbox" name="QuanLyChiDinhVaTraLoiKetQuaXetNghiem">
+                    <label class="form-check-label" for="QuanLyChiDinhVaTraLoiKetQuaXetNghiem">Quản lý chỉ định và trả lời kết quả xét nghiệm</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaXetNghiem" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaHinhAnh" class="form-check-input" type="checkbox" id="QuanLyChiDinhVaTraLoiKetQuaHinhAnhCheckbox" name="QuanLyChiDinhVaTraLoiKetQuaHinhAnh">
+                    <label class="form-check-label" for="QuanLyChiDinhVaTraLoiKetQuaHinhAnh">Phòng khám có danh mục BHYT</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyChiDinhVaTraLoiKetQuaHinhAnh" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyDuocPhamVatTuYTe" class="form-check-input" type="checkbox" id="QuanLyDuocPhamVatTuYTeCheckbox" name="QuanLyDuocPhamVatTuYTe">
+                    <label class="form-check-label" for="QuanLyDuocPhamVatTuYTe">Quản lý dược phẩm, vật tư y tế</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyDuocPhamVatTuYTe" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyThuNgan" class="form-check-input" type="checkbox" id="QuanLyThuNganCheckbox" name="QuanLyThuNgan">
+                    <label class="form-check-label" for="QuanLyThuNgan">Quản lý thu ngân</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyThuNgan" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.HeThongBaoCao" class="form-check-input" type="checkbox" id="HeThongBaoCaoCheckbox" name="HeThongBaoCao">
+                    <label class="form-check-label" for="HeThongBaoCao">Hệ thống báo cáo</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.HeThongBaoCao" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanLyDanhMuc" class="form-check-input" type="checkbox" id="QuanLyDanhMucCheckbox" name="QuanLyDanhMuc">
+                    <label class="form-check-label" for="QuanLyDanhMuc">Quản lý danh mục</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanLyDanhMuc" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.QuanTriHeThong" class="form-check-input" type="checkbox" id="QuanTriHeThongCheckbox" name="QuanTriHeThong">
+                    <label class="form-check-label" for="QuanTriHeThong">Quản trị hệ thống</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.QuanTriHeThong" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.KetNoiMayXetNghiem" class="form-check-input" type="checkbox" id="KetNoiMayXetNghiemCheckbox" name="KetNoiMayXetNghiem">
+                    <label class="form-check-label" for="KetNoiMayXetNghiem">Kết nối máy xét nghiệm</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.KetNoiMayXetNghiem" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.KetNoiMaySieuAmGiaiPhauBenh" class="form-check-input" type="checkbox" id="KetNoiMaySieuAmGiaiPhauBenhCheckbox" name="KetNoiMaySieuAmGiaiPhauBenh">
+                    <label class="form-check-label" for="KetNoiMaySieuAmGiaiPhauBenh">Kết nối máy siêu âm giải phẫu bệnh</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.KetNoiMaySieuAmGiaiPhauBenh" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input asp-for="@Model.Trial.TraLoiKetQuaQuaZalo" class="form-check-input" type="checkbox" id="TraLoiKetQuaQuaZaloCheckbox" name="TraLoiKetQuaQuaZalo">
+                    <label class="form-check-label" for="TraLoiKetQuaQuaZalo">Trả lời kết quả, nhắc hẹn uống thuốc, tái khám ... quan Zalo, SMS</label>
+                </div>
+                <!-- Use a hidden input to store the value -->
+                <input asp-for="@Model.Trial.TraLoiKetQuaQuaZalo" type="hidden" value="false" />
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <label asp-for="@Model.Trial.Message">Để lại lời nhắn</label>
+                <textarea asp-for="@Model.Trial.Message" class="form-control" rows="5" id="message" name="message" placeholder="Nhập lời nhắn..."></textarea>
+                <span asp-validation-for="@Model.Trial.Message" class="text-danger"></span>
+            </div>
+*@
+
+
+
+            <br><br>
+            <div class="col-md-12 col-sm-12" style="margin-top:10px;">
+                <button type="submit" class="form-control btn btn-success" id="cf-submit" name="submit">Liên hệ ngay</button>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+
+
+@*
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Find the checkbox by its ID
+        var DanhMucKyThuatDichVuCheckbox = $("#DanhMucKyThuatDichVuCheckbox");
+        var PhongKhamCoDanhMucBHYTCheckbox = $("#PhongKhamCoDanhMucBHYTCheckbox");
+
+
+        // Listen for changes to the checkbox
+        DanhMucKyThuatDichVuCheckbox.change(function () {
+            // Check if the checkbox is checked
+            var isChecked = DanhMucKyThuatDichVuCheckbox.is(":checked");
+
+            // Set the value of a hidden input field to 1 or 0 based on the checkbox state
+            $("#DanhMucKyThuatDichVu").val(isChecked ? 1 : 0);
+        });
+        PhongKhamCoDanhMucBHYTCheckbox.change(function () {
+            // Check if the checkbox is checked
+            var isChecked = PhongKhamCoDanhMucBHYTCheckbox.is(":checked");
+
+            // Set the value of a hidden input field to 1 or 0 based on the checkbox state
+            $("#PhongKhamCoDanhMucBHYT").val(isChecked ? 1 : 0);
+        });
+    });
+</script>
+*@

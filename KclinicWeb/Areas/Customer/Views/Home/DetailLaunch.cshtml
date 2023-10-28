@@ -1,0 +1,96 @@
+﻿@model Launch
+
+@using System.Text.RegularExpressions;
+@using System.IO;
+
+@functions {
+    public string InsertImageUrls(string description)
+    {
+        string uploadsFolder = "/images/launchs/"; // The folder where images are uploaded on the server.
+
+        // Find all occurrences of <img> tags in the content.
+        var imgTags = new Regex(@"<img.*?>").Matches(description);
+        foreach (Match imgTag in imgTags)
+        {
+            // Extract the 'src' attribute value from the <img> tag.
+            var srcAttribute = new Regex(@"src\s*=\s*""([^""]*)""").Match(imgTag.Value);
+            if (srcAttribute.Success)
+            {
+                string oldImageUrl = srcAttribute.Groups[1].Value;
+
+                // Use the Path.GetFileName to get the filename from the URL.
+                string filename = System.IO.Path.GetFileName(oldImageUrl);
+
+                // Construct the new image URL with the correct relative path.
+                string newImageUrl = $"{uploadsFolder}{filename}";
+
+                // Replace the temporary URL with the correct server URL.
+                description = description.Replace(oldImageUrl, newImageUrl);
+
+            }
+        }
+
+        return description;
+    }
+}
+
+@*
+<form method="post">
+        <div class="card  container pt-4">
+            <div class="card-header bg-primary text-light ml-0  row ">
+                <div class="col-12 col-md-6">
+                    <h1 class="text-white-50">@Model.Blog.Title</h1>
+                    <p class="text-warning">by @Model.Blog.Author</p>
+                </div>
+                <div class="col-12 col-md-6 text-end pt-4">
+                    <span class="badge bg-info pt-2" style="height:30px;">@Model.Blog.CoverType.Name</span>
+                    <span class="badge bg-warning pt-2" style="height:30px;">@Model.Blog.Category.Name</span>
+                </div>
+            </div>
+            <div class="card-body row container">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-8 col-lg-8">
+
+
+                            <div class="row pl-2">
+                            <p class="text-secondary">@Html.Raw(InsertImageUrls(Model.Blog.Description))</p>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-lg-3 offset-lg-1 text-center">
+                            <img src="@Model.Blog.ImageUrl" width="100%" class="rounded" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-6 pb-1">
+                        <a class="btn btn-success form-control " style="height:50px;" asp-action="Index">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+*@
+
+<div class="container">
+
+    <!-- NEWS DETAIL -->
+    <section id="news-detail" data-stellar-background-ratio="0.5">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12 col-sm-6">
+                    <!-- NEWS THUMB -->
+                    <div class="news-detail-thumb" >
+                        <h2 style="font-size:30px;color:orangered">@Model.Title</h2>
+                        <p class="text-secondary">@Html.Raw(InsertImageUrls(Model.Description))</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
