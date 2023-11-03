@@ -41,7 +41,7 @@
     <div class="container">
         <div class="row">
             @{
-                var about1 = Model.Abouts.FirstOrDefault(a => a.Id == 1);
+                var about1 = Model.Abouts?.FirstOrDefault(a => a.Id == 1);
             }
             @if (about1 != null)
             {
@@ -157,6 +157,77 @@
 
 <!-- Product -->
 <section id="team" class="" data-stellar-background-ratio="1">
+    <!-- Search Form -->
+    <div class="container mt-4" style="margin-top: 20px;">
+        <div class="row">
+            <form method="get" action="/" class="form-inline">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" style="width: 130%;" placeholder="Search by Product Name" />
+                    </div>
+                </div>
+                <div class="col-md-7 form-group mt-2">
+                    <label for="cateItemId" class="control-label col-md-4">Filter by Category:</label>
+                    <select name="cateItemId" id="cateItemId" class="form-control col-md-8">
+                        <option value="">All Categories</option>
+                        @foreach (var cateItem in Model.CateItems)
+                        {
+                            <option value="@cateItem.Id">@cateItem.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-block">Search</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    @{
+        var result = ViewData["Result"] as string;
+    }
+    
+    <div class="container mt-4" style="margin-top: 20px;">
+        <div class="row">
+            <form method="post" enctype="multipart/form-data" action="/">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Select Product by Image</label>                        
+                    </div>
+                </div>
+
+                <div class="col-md-7 form-group mt-2">
+                    <label for="imageFile" class="control-label col-md-4">Select Image File:</label>
+                    <input type="file" id="imageFile" class="form-control col-md-8" style="width:auto;" name="imageFile" accept="image/*" />
+                </div>
+
+
+
+                <div class="col-md-2">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-block">Process</button>
+                    </span>
+                </div>
+                
+            </form>
+
+            @if (!string.IsNullOrEmpty(result))
+            {
+                <div class="col-md-12 mt-3">
+                    <h2>Results:</h2>
+                    <p>@result</p>
+                </div>                
+            }
+        </div>
+        
+    </div>
+
+    <!-- Display Products -->
     <div class="container mt-3 mb-3">
         <div class="row">
             @{

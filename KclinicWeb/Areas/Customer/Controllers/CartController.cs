@@ -37,7 +37,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
             foreach (var cart in ShoppingCartVM.ListCart)
             {
                 cart.Price = cart.Product.Price;
-				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price);
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 			}
 
             return View(ShoppingCartVM);
@@ -69,7 +69,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 			foreach (var cart in ShoppingCartVM.ListCart)
 			{
 				cart.Price = cart.Product.Price;
-				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price);
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 			}
 			return View(ShoppingCartVM);
 		}
@@ -94,7 +94,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 			foreach (var cart in ShoppingCartVM.ListCart)
 			{
 				cart.Price = cart.Product.Price;
-				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price);
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 			}
 
 
@@ -106,7 +106,8 @@ namespace KclinicWeb.Areas.Customer.Controllers
 				{
 					ProductId = cart.ProductId,
 					OrderId = ShoppingCartVM.OrderHeader.Id,
-					Price = cart.Price
+					Price = cart.Price,
+					Count = cart.Count
 				};
 				_unitOfWork.OrderDetail.Add(orderDetail);
 				_unitOfWork.Save();
@@ -141,7 +142,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 						},
 
 					},
-					Quantity = 1,
+					Quantity = item.Count,
 				};
 				options.LineItems.Add(sessionLineItem);
 
@@ -182,6 +183,29 @@ namespace KclinicWeb.Areas.Customer.Controllers
 			return View(id);
 
 			//check the stripe status
+		}
+
+		public IActionResult Plus(int cartId)
+		{
+			var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+			_unitOfWork.ShoppingCart.IncrementCount(cart, 1);
+			_unitOfWork.Save();
+			return RedirectToAction(nameof(Index));
+		}
+
+		public IActionResult Minus(int cartId)
+		{
+			var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+			if (cart.Count <= 1)
+			{
+				_unitOfWork.ShoppingCart.Remove(cart);
+			}
+			else
+			{
+				_unitOfWork.ShoppingCart.DecrementCount(cart, 1);
+			}
+			_unitOfWork.Save();
+			return RedirectToAction(nameof(Index));
 		}
 
 		public IActionResult Remove(int cartId)
