@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "PaymentResponse";
+}
+
+<style>
+    .response-text {
+        text-align: center
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(ViewBag.OrderNumber))
+{
+    <div class="response-text">
+        <hr />
+        <h2>Thank you</h2>
+        <hr />
+        Your order has been successfully processed! <br /> <br />
+        ORDER NUMBER: @ViewBag.OrderNumber
+    </div>
+}
+else
+{
+    <div class="response-text">
+        <hr />
+        <h2>Sorry, your order has been cancelled</h2>
+    </div>
+}

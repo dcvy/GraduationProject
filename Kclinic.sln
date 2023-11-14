@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kclinic.DataAccess", "Kclin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kclinic.Models", "Kclinic.Models\Kclinic.Models.csproj", "{77BFF498-00FC-4511-BE93-477D6123D090}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject.Server", "..\MetamaskBlazor\ExampleProject.Server\ExampleProject.Server.csproj", "{B321E69E-81C8-491E-AC02-8B9FE97BDB90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethereum.Erc20.Blazor", "..\MetamaskBlazor\Nethereum.Erc20.Blazor\Nethereum.Erc20.Blazor.csproj", "{B14F88B3-ABAA-498B-8189-D44C576D1BCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{77BFF498-00FC-4511-BE93-477D6123D090}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77BFF498-00FC-4511-BE93-477D6123D090}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77BFF498-00FC-4511-BE93-477D6123D090}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B321E69E-81C8-491E-AC02-8B9FE97BDB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B321E69E-81C8-491E-AC02-8B9FE97BDB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B321E69E-81C8-491E-AC02-8B9FE97BDB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B321E69E-81C8-491E-AC02-8B9FE97BDB90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B14F88B3-ABAA-498B-8189-D44C576D1BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B14F88B3-ABAA-498B-8189-D44C576D1BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B14F88B3-ABAA-498B-8189-D44C576D1BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B14F88B3-ABAA-498B-8189-D44C576D1BCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

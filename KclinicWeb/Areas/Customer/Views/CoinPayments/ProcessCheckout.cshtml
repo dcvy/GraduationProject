@@ -1,0 +1,58 @@
+﻿@model Kclinic.Models.OrderModel
+
+@{
+    ViewData["Title"] = "ProcessCheckout";
+}
+
+<h2>Checkout</h2>
+
+<form asp-controller="CoinPayments" asp-action="ProcessCheckout" method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div>
+                    <hr />
+                    <dl class="dl-horizontal">
+
+                        @Html.HiddenFor(model => model.OrderId)
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.OrderTotal)
+                        </dt>
+                        <dd>
+                            $@Html.DisplayFor(model => model.OrderTotal)
+                            @Html.HiddenFor(model => model.OrderTotal)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ProductName)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ProductName)
+                            @Html.HiddenFor(model => model.ProductName)
+                        </dd>
+                    </dl>
+                    <hr />
+                    <div style="text-align:center; font-weight:600">Billing Information</div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.FirstName)
+                            @Html.HiddenFor(model => model.FirstName)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LastName)
+                            @Html.HiddenFor(model => model.LastName)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                            @Html.HiddenFor(model => model.Email)
+                        </dd>
+                    </dl>
+                </div>
+                <input type="image" src="https://www.coinpayments.net/images/pub/checkout-blue.png" alt="Checkout">
+            </div>
+        </div>
+    </div>
+</form>
