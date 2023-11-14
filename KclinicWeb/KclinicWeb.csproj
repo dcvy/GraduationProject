@@ -34,8 +34,6 @@
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MetamaskBlazor\ExampleProject.Server\ExampleProject.Server.csproj" />
-    <ProjectReference Include="..\..\MetamaskBlazor\Nethereum.Erc20.Blazor\Nethereum.Erc20.Blazor.csproj" />
     <ProjectReference Include="..\Kclinic.DataAccess\Kclinic.DataAccess.csproj" />
 	<ProjectReference Include="..\Kclinic.Utility\Kclinic.Utility.csproj" />
   </ItemGroup>
