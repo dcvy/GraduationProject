@@ -43,7 +43,11 @@ namespace KclinicWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-		public IActionResult Summary()
+        public IActionResult CoinPayments()
+        {
+            return View();
+        }
+        public IActionResult Summary()
 		{
             var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);

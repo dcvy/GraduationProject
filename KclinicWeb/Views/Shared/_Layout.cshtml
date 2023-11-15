@@ -424,6 +424,10 @@
     <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) { document.getElementById("linkzalo").href = "https://zalo.me/0914911577"; }
     </script>
+
+    <base href="~/" />
+    <script src="_content/Nethereum.Metamask.Blazor/NethereumMetamask.js"></script>
+    <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

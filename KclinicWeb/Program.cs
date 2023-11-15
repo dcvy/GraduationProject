@@ -12,6 +12,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Kclinic.Utility;
 using KclinicWeb.Clients;
 using Stripe;
+using Nethereum.Metamask.Blazor;
+using Nethereum.Metamask;
+using Nethereum.UI;
+using Microsoft.AspNetCore.Components.Authorization;
+using Nethereum.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +29,23 @@ builder.Services.AddSingleton(x =>
     )
 );
 
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DetailedErrors = true;
+}); ;
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IMetamaskInterop, MetamaskBlazorInterop>();
+builder.Services.AddScoped<MetamaskHostProvider>();
+builder.Services.AddScoped(services =>
+{
+    var metamaskHostProvider = services.GetService<MetamaskHostProvider>();
+    var selectedHostProvider = new SelectedEthereumHostProviderService();
+    selectedHostProvider.SetSelectedEthereumHostProvider(metamaskHostProvider);
+    return selectedHostProvider;
+});
+builder.Services.AddScoped<IEthereumHostProvider, MetamaskHostProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, EthereumAuthenticationStateProvider>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -67,4 +88,6 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+app.MapBlazorHub();
+app.MapRazorPages();
 app.Run();

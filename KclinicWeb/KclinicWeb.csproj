@@ -6,6 +6,7 @@
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.4.0" />
     <PackageReference Include="IronPython" Version="3.4.1" />
     <PackageReference Include="IronPython.StdLib" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
@@ -19,6 +20,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.20.0" />
+    <PackageReference Include="Nethereum.Metamask.Blazor" Version="4.14.0" />
+    <PackageReference Include="Nethereum.UI" Version="4.14.0" />
+    <PackageReference Include="Nethereum.Web3" Version="4.14.0" />
     <PackageReference Include="Stripe.net" Version="42.1.0" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +38,7 @@
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MetamaskBlazor\Nethereum.Erc20.Blazor\Nethereum.Erc20.Blazor.csproj" />
     <ProjectReference Include="..\Kclinic.DataAccess\Kclinic.DataAccess.csproj" />
 	<ProjectReference Include="..\Kclinic.Utility\Kclinic.Utility.csproj" />
   </ItemGroup>
