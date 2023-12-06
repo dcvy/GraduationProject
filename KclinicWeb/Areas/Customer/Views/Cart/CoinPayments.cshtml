@@ -32,5 +32,22 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/Nethereum.Metamask.Blazor/NethereumMetamask.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tokenAmountInETH = localStorage.getItem('tokenAmountInETH');
+            console.log('Retrieved tokenAmountInETH:', tokenAmountInETH);
+
+            var tokenAmountElement = document.getElementById('tokenAmount');
+            if (tokenAmountElement) {
+                try {
+                    tokenAmountElement.value = tokenAmountInETH || ''; // Set to an empty string if null
+                } catch (e) {
+                    console.error('Error setting value:', e);
+                }
+            } else {
+                console.error('tokenAmountElement not found.');
+            }
+        });
+    </script>
 </body>
 </html>
