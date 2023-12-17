@@ -111,6 +111,29 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
+    [HttpGet("/api/CateItems")]
+    public IActionResult GetCateItems()
+    {
+        var cateItems = _unitOfWork.CateItem.GetAll().ToList();
+
+        // Return the CateItems as JSON
+        return Json(cateItems);
+    }
+
+    [HttpGet("/api/Products")]
+    public IActionResult GetProducts(int? cateItemId)
+    {
+        var productsQuery = _unitOfWork.Product.GetAll(includeProperties: "CateItem");
+
+        if (cateItemId.HasValue)
+        {
+            productsQuery = productsQuery.Where(p => p.CateItemId == cateItemId.Value);
+        }
+
+        var products = productsQuery.ToList();
+
+        return Json(products);
+    }
 
     private string ExecutePythonScript(string scriptPath, string pythonExecutable, string imagePath)
     {

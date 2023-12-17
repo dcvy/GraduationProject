@@ -38,7 +38,7 @@ function init() {
             <!-- <div class='bot-msg'>
                 <img class='bot-img' src ='${botLogoPath}' />
                 <div class='response-btns'>
-                    <button class='btn-primary' onclick= 'userResponseBtn(this)' value='/sign_in'>sample btn</button>            
+                    <button class='btn-primary-chatbot' onclick= 'userResponseBtn(this)' value='/sign_in'>sample btn</button>            
                 </div>
 			</div> -->
 
@@ -229,11 +229,13 @@ function setBotResponse(val) {
 
                 //check if there is image
                 if (val[i].hasOwnProperty("image")) {
-                    var BotResponse = "<div class='bot-msg'>" + "<img class='bot-img' src ='${botLogoPath}' />"
-                    '<img class="msg-image" src="' + val[i].image + '">' +
-                        '</div>'
+                    var BotResponse = "<div class='bot-msg'>" +
+                        `<img class='bot-img' src='${botLogoPath}' />` +
+                        `<img class='msg-image' src='${val[i].image}' />` +
+                        '</div>';
                     $(BotResponse).appendTo('.chat-area').hide().fadeIn(1000);
                 }
+
 
                 //check if there are buttons
                 if (val[i].hasOwnProperty("buttons")) {
@@ -241,7 +243,7 @@ function setBotResponse(val) {
 
                     buttonsArray = val[i].buttons;
                     buttonsArray.forEach(btn => {
-                        BotResponse += `<button class='btn-primary' onclick= 'userResponseBtn(this)' value='${btn.payload}'>${btn.title}</button>`
+                        BotResponse += `<button class='btn-primary-chatbot' onclick= 'userResponseBtn(this)' value='${btn.payload}'>${btn.title}</button>`
                     })
 
                     BotResponse += "</div></div>"
