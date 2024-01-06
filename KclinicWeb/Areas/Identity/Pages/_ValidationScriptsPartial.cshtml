@@ -16,3 +16,20 @@
             integrity="sha384-R3vNCHsZ+A2Lo3d5A6XNP7fdQkeswQWTIPfiYwSpEP3YV079R+93YzTeZRah7f/F">
     </script>
 </environment>
+<script>
+    // JavaScript to make a background request after page load
+    document.addEventListener('DOMContentLoaded', function () {
+        // Use fetch to make a background request to /api/UserClaims
+        fetch('/api/UserClaims', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include' // Include credentials if necessary
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    });
+</script>

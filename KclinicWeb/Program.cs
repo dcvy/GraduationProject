@@ -17,6 +17,13 @@ using Nethereum.Metamask;
 using Nethereum.UI;
 using Microsoft.AspNetCore.Components.Authorization;
 using Nethereum.Blazor;
+using static KclinicWeb.Controllers.HomeController;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +72,22 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IStorageProvider, InMemoryStorageProvider>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Events.OnSignedIn = async context =>
+        {
+            // Background request to /api/UserClaims
+            var httpClient = new HttpClient();
+            var userClaimsResponse = await httpClient.GetAsync("https://localhost:5001/api/UserClaims");
+            userClaimsResponse.EnsureSuccessStatusCode(); // Ensure a successful response
+
+            // Redirect the user to the desired page (e.g., "/Home/Index")
+            context.Response.Redirect("/api/UserClaims");
+        };
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
