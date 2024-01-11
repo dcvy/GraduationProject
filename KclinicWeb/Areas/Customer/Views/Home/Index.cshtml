@@ -8,31 +8,7 @@
         title = "Shopping BOT", welcomeMessage = "Hey, i am Shopping Bot", inactiveMsg = "Server is down, Please contact the developer to activate it", theme = "purple")
 </script>
 
-<script>
-    // Function to make a background request to /api/UserClaims
-    async function callUserClaimsApiInBackground() {
-        try {
-            // Make a fetch request to the API endpoint
-            const response = await fetch('/api/UserClaims');
 
-            // Check if the response is successful (status code in the range 200-299)
-            if (response.ok) {
-                // Process the response if needed
-                const data = await response.json(); // or response.text() if the response is not JSON
-                console.log('API Response:', data);
-            } else {
-                console.error('Error calling API:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error calling API:', error.message);
-        }
-    }
-
-    // Call the function when the page is loaded or as needed
-    window.onload = function () {
-        callUserClaimsApiInBackground();
-    };
-</script>
 
 <!-- HOME -->
 <section id="home" class="slider" data-stellar-background-ratio="0.5">
@@ -298,7 +274,7 @@
                                     // Convert the price to a string
                                     string priceString = product.Price.ToString("N0"); // N0 format adds thousands separators
                                 }
-                                @*<h3><span>@priceString</span><span> .VNĐ</span></h3>*@
+                                @*<h3><span>@priceString</span><span> .USD</span></h3>*@
                                 <div class="team-contact-info">
                                     <p><i class="fa fa-phone"></i> 0914911577</p>
                                     <p><i class="fa fa-envelope-o"></i> <a href="#">www.kclgroup.vn</a></p>
@@ -498,5 +474,31 @@
             dots[slideIndex - 1].className += " active";
             captionText.innerHTML = dots[slideIndex - 1].alt;
         }
+    </script>
+
+    <script>
+        // Function to make a background request to /api/UserClaims
+        async function callUserClaimsApiInBackground() {
+            try {
+                // Make a fetch request to the API endpoint
+                const response = await fetch('/api/UserClaims');
+
+                // Check if the response is successful (status code in the range 200-299)
+                if (response.ok) {
+                    // Process the response if needed
+                    const data = await response.json(); // or response.text() if the response is not JSON
+                    console.log('API Response:', data);
+                } else {
+                    console.error('Error calling API:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error calling API:', error.message);
+            }
+        }
+
+        // Call the function when the page is loaded or as needed
+        window.onload = function () {
+            callUserClaimsApiInBackground();
+        };
     </script>
 }

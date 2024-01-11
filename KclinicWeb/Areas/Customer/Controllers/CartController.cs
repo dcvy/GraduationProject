@@ -8,6 +8,7 @@ using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 
 namespace KclinicWeb.Areas.Customer.Controllers
@@ -17,11 +18,14 @@ namespace KclinicWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-		[BindProperty]
+        private readonly HttpClient _httpClient;
+        [BindProperty]
 		public ShoppingCartVM ShoppingCartVM { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://localhost:5001");
         }
         public IActionResult Index()
         {
@@ -88,9 +92,6 @@ namespace KclinicWeb.Areas.Customer.Controllers
 
 			ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value,
 				includeProperties: "Product");
-
-			ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-			ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
 			ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
 			ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
 
@@ -100,9 +101,11 @@ namespace KclinicWeb.Areas.Customer.Controllers
 				cart.Price = cart.Product.Price;
 				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 			}
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
+            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
 
-
-			_unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
 			_unitOfWork.Save();
 			foreach (var cart in ShoppingCartVM.ListCart)
 			{
@@ -118,7 +121,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 			}
 
 			//stripe settings 
-			var domain = "https://kclinic-introduction.kclgroup.vn/";
+			var domain = "https://localhost:5001/";
 			var options = new SessionCreateOptions
 			{
 				PaymentMethodTypes = new List<string>
@@ -139,7 +142,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 					PriceData = new SessionLineItemPriceDataOptions
 					{
 						UnitAmount = (long)(item.Price),//20.00 -> 2000
-						Currency = "vnd",
+						Currency = "usd",
 						ProductData = new SessionLineItemPriceDataProductDataOptions
 						{
 							Name = item.Product.Name
@@ -160,33 +163,95 @@ namespace KclinicWeb.Areas.Customer.Controllers
 
 			Response.Headers.Add("Location", session.Url);
 			return new StatusCodeResult(303);
-
-
-
-			//_unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
-			//_unitOfWork.Save();
-			//return RedirectToAction("Index","Home");
 		}
 
-		public IActionResult OrderConfirmation(int id)
+        [HttpPost("TransferSuccess")]
+        [ValidateAntiForgeryToken]
+        public IActionResult TransferSuccess([FromBody] TransferSuccessModel model)
+        {
+            try
+            {
+                // Process the success information, e.g., store it in the database
+                // Perform any necessary actions on the server side
+
+                // Access the transaction hash from the model
+                string transactionHash = model?.TransactionHash;
+
+                // Save the transaction hash in the OrderHeader or perform any other database operation
+                if (!string.IsNullOrEmpty(transactionHash))
+                {
+                    var claimsIdentity = (ClaimsIdentity)User.Identity;
+                    var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                    ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value,
+                        includeProperties: "Product");
+                    ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
+                    ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
+
+                    foreach (var cart in ShoppingCartVM.ListCart)
+                    {
+                        cart.Price = cart.Product.Price;
+                        ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+                    }
+
+                    ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+                    ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
+                    ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+
+                    ShoppingCartVM.OrderHeader.TransactionHash = transactionHash; // Save the transaction hash
+
+                    _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+                    _unitOfWork.Save();
+
+                    foreach (var cart in ShoppingCartVM.ListCart)
+                    {
+                        OrderDetail orderDetail = new()
+                        {
+                            ProductId = cart.ProductId,
+                            OrderId = ShoppingCartVM.OrderHeader.Id,
+                            Price = cart.Price,
+                            Count = cart.Count
+                        };
+                        _unitOfWork.OrderDetail.Add(orderDetail);
+                        _unitOfWork.Save();
+                    }
+
+                    // Return a success response
+                    return Ok(new { Message = "Transfer success processed on the server." });
+                }
+
+                // If the transaction hash is empty, return a bad request response
+                return BadRequest("Invalid or missing transaction hash.");
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, log the error, and return an appropriate response
+                return BadRequest("Error processing transfer success.");
+            }
+        }
+
+
+        public IActionResult OrderConfirmation(int id)
 		{
-            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
-			var service = new SessionService();
-			Session session = service.Get(orderHeader.SessionId);
-			//check the stripe status
-			if (session.PaymentStatus.ToLower() == "paid")
+			OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
+			if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
 			{
-                _unitOfWork.OrderHeader.UpdateStripePaymentID(id, orderHeader.SessionId, session.PaymentIntentId);
-                _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
-				_unitOfWork.Save();
+				var service = new SessionService();
+				Session session = service.Get(orderHeader.SessionId);
+				//check the stripe status
+				if (session.PaymentStatus.ToLower() == "paid")
+				{
+                    _unitOfWork.OrderHeader.UpdateStripePaymentID(id, orderHeader.SessionId, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
 			}
+
 			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId ==
 			orderHeader.ApplicationUserId).ToList();
 			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
 			_unitOfWork.Save();
 			return View(id);
-
-			//check the stripe status
 		}
 
 		public IActionResult Plus(int cartId)

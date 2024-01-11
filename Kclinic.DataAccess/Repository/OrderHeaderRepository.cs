@@ -39,7 +39,8 @@ namespace Kclinic.DataAccess.Repository
 		{
 			var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
 
-			orderFromDb.SessionId = sessionId;
+            orderFromDb.PaymentDate = DateTime.Now;
+            orderFromDb.SessionId = sessionId;
 			orderFromDb.PaymentIntentId = paymentItentId;
 		}
 	}

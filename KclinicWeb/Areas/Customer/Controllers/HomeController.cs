@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace KclinicWeb.Controllers;
@@ -31,9 +32,9 @@ public class HomeController : Controller
     public HomeController(IWebHostEnvironment webHostEnvironment, ILogger<HomeController> logger, IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IStorageProvider storageProvider)
     {
         _webHostEnvironment = webHostEnvironment;
-        pythonScriptPath = "D:/codes/python/image_recognizer" +
+        pythonScriptPath = "D:/codes/python/image_main" +
             "/classify.py"; // Replace with the actual path to your Python script
-        pythonExecutable = "C:/Users/ADMIN/AppData/Local/Programs/Python/Python36/python.exe"; // Replace with the Python executable if not in system PATH
+        pythonExecutable = "C:/Users/ADMIN/AppData/Local/Programs/Python/Python37/python.exe"; // Replace with the Python executable if not in system PATH
         _logger = logger;
         _unitOfWork = unitOfWork;
         _httpClientFactory = httpClientFactory;
@@ -244,23 +245,62 @@ public class HomeController : Controller
 
     private string ExecutePythonScript(string scriptPath, string pythonExecutable, string imagePath)
     {
-        var processInfo = new ProcessStartInfo
+        try
         {
-            FileName = pythonExecutable,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            Arguments = $"{scriptPath} \"{imagePath}\""
-        };
+            var processInfo = new ProcessStartInfo
+            {
+                FileName = pythonExecutable,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                Arguments = $"{scriptPath} \"{imagePath}\""
+            };
 
-        using (var process = new Process { StartInfo = processInfo })
+            using (var process = new Process { StartInfo = processInfo })
+            {
+                StringBuilder resultBuilder = new StringBuilder();
+                StringBuilder errorBuilder = new StringBuilder();
+
+                process.OutputDataReceived += (sender, e) =>
+                {
+                    if (!string.IsNullOrEmpty(e.Data) && !e.Data.Contains("|"))  // Exclude lines with progress bar
+                    {
+                        resultBuilder.AppendLine(e.Data);
+                    }
+                };
+
+                process.ErrorDataReceived += (sender, e) =>
+                {
+                    if (!string.IsNullOrEmpty(e.Data))
+                    {
+                        errorBuilder.AppendLine(e.Data);
+                    }
+                };
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                process.WaitForExit();
+
+                string result = resultBuilder.ToString().Trim();
+                string error = errorBuilder.ToString().Trim();
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    // Log the error or handle it as needed
+                    _logger.LogError($"Error during Python script execution: {error}");
+                }
+
+                return result;
+            }
+        }
+        catch (Exception ex)
         {
-            process.Start();
-            string result = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-            return result;
+            // Log the exception or handle it as needed
+            _logger.LogError($"Exception during Python script execution: {ex.Message}");
+            return "An error occurred during image processing.";
         }
     }
 

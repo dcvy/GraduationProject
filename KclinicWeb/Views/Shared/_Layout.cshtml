@@ -92,13 +92,7 @@
                                 <p><a class="dropdown-item" asp-area="Admin" asp-controller="CateItem" asp-action="Index">Danh mục SP</a></p>
                                 <p><a class="dropdown-item" asp-area="Admin" asp-controller="CoverType" asp-action="Index">Loại</a></p>
                                 <p><a class="dropdown-item" asp-area="Admin" asp-controller="Blog" asp-action="Index">Bài viết</a></p>
-                                <p><a class="dropdown-item" asp-area="Admin" asp-controller="Launch" asp-action="Index">Tiến trình</a></p>
                                 <p><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Sản phẩm</a></p>
-                                <p><a class="dropdown-item" asp-area="Admin" asp-controller="Function" asp-action="Index">Chức năng</a></p>
-                                <p><a class="dropdown-item" asp-area="Admin" asp-controller="Feature" asp-action="Index">Nổi bật</a></p>
-                                <p><a class="dropdown-item" asp-area="Admin" asp-controller="About" asp-action="Index">Giới thiệu</a></p>
-                                <p><a class="dropdown-item" asp-area="Admin" asp-controller="Partner" asp-action="Index">Đối tác</a></p>
-                                <p><a class="dropdown-item" asp-area="Customer" asp-controller="Trial" asp-action="Index">Khách hàng</a></p>
                                 <div class="dropdown-divider"></div>
                             </div>
                         </li>
@@ -125,6 +119,11 @@
                         var cartItemCountCookie = Context.Request.Cookies["CartItemCount"];     
                     }
 
+                    <li class="nav-item">
+                        <a class=nav-link asp-area="Admin" asp-controller="Order" asp-action="Index">
+                            Quản lý hoá đơn
+                        </a>
+                    </li>
                     
                     <li class="nav-item">
                         <a class=nav-link asp-area="Customer" asp-controller="Cart" asp-action="Index">
