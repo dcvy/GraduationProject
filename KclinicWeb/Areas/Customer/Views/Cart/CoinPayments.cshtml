@@ -1,6 +1,8 @@
-﻿@page "/Customer/Cart/CoinPayments"
-@namespace KclinicWeb.Components
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Kclinic.Models.ViewModels.ShoppingCartVM
+@using Microsoft.Extensions.Options
+
+
 @{
     Layout = null;
 }
@@ -17,8 +19,11 @@
     <link href="KclinicWeb.styles.css" rel="stylesheet" />
 </head>
 <body>
-    <component type="typeof(App)" render-mode="Server" />
-
+    <component type="typeof(KclinicWeb.Components.App)" render-mode="Server" />
+    @if (Model != null)
+    {
+        @Html.Partial("_OrderDetailsPartial", Model)
+    }
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.

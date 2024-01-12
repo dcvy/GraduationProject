@@ -49,8 +49,80 @@ namespace KclinicWeb.Areas.Customer.Controllers
 
         public IActionResult CoinPayments()
         {
-            return View();
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+			ShoppingCartVM = new ShoppingCartVM()
+			{
+				ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value,
+				includeProperties: "Product"),
+				OrderHeader = new()
+			};
+			ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(
+				u => u.Id == claim.Value);
+
+			ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+			ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+			ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+			ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+			ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+			ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
+
+
+
+			foreach (var cart in ShoppingCartVM.ListCart)
+			{
+				cart.Price = cart.Product.Price;
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+			}
+			return View(ShoppingCartVM);
+		}
+
+        [HttpPost]
+        [ActionName("CoinPayments")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CoinPaymentsPOST()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value,
+                includeProperties: "Product");
+            ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
+            ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
+
+
+            foreach (var cart in ShoppingCartVM.ListCart)
+            {
+                cart.Price = cart.Product.Price;
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
+            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+
+            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+            _unitOfWork.Save();
+            foreach (var cart in ShoppingCartVM.ListCart)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    ProductId = cart.ProductId,
+                    OrderId = ShoppingCartVM.OrderHeader.Id,
+                    Price = cart.Price,
+                    Count = cart.Count
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+
+           
+            _unitOfWork.Save();
+
+
+            return new StatusCodeResult(303);
         }
+
         public IActionResult Summary()
 		{
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -141,7 +213,7 @@ namespace KclinicWeb.Areas.Customer.Controllers
 				{
 					PriceData = new SessionLineItemPriceDataOptions
 					{
-						UnitAmount = (long)(item.Price),//20.00 -> 2000
+                        UnitAmount = (long)(item.Price * 100),//20.00 -> 2000
 						Currency = "usd",
 						ProductData = new SessionLineItemPriceDataProductDataOptions
 						{
